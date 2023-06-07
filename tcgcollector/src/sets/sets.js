@@ -5,6 +5,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 var countPage = 1;
 export default function Sets() {
   const [data, setData] = useState(null);
@@ -42,29 +44,28 @@ export default function Sets() {
   }, []);
   if (data !== undefined && data !== null) {
     var getdata = data.data;
-    function custom_sort(a, b) {
-      return (
-        new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
-      );
-    }
-    getdata.sort(custom_sort);
     listSets = getdata.map((set) => (
-      <Card
-        key={set.id}
-        className="px-2 py-2 ml-2 mb-4 grid w-full shadow-inner shadow-gray-light items-end justify-center overflow-hidden text-center hover:bg-gray-light hover:bg-opacity-40"
-      >
-        <CardHeader>
-          <img className="object-scale-down h-48 w-96" src={set.images.logo} />
-        </CardHeader>
-        <CardBody className="mt-2">
-          <Typography
-            variant="h5"
-            className="mb-2 py-2 text-gray-dark bg-gray-light"
-          >
-            {set.name}
-          </Typography>
-        </CardBody>
-      </Card>
+      <Link to={"/cards/" + set.id}>
+        <Card
+          key={set.id}
+          className="px-2 py-2 ml-2 mb-4 grid w-full shadow-inner shadow-gray-light items-end justify-center overflow-hidden text-center hover:bg-gray-light hover:bg-opacity-40"
+        >
+          <CardHeader>
+            <img
+              className="object-scale-down h-48 w-96"
+              src={set.images.logo}
+            />
+          </CardHeader>
+          <CardBody className="mt-2">
+            <Typography
+              variant="h5"
+              className="mb-2 py-2 text-gray-dark bg-gray-light"
+            >
+              {set.name}
+            </Typography>
+          </CardBody>
+        </Card>
+      </Link>
     ));
   }
   return (
@@ -115,7 +116,9 @@ export default function Sets() {
                 </a>
               </div>
               <div className="text-right">
-                <span className="italic text-lg font-light">Página {countPage}</span>
+                <span className="italic text-lg font-light">
+                  Página {countPage}
+                </span>
               </div>
             </div>
             <div className="grid grid-cols-3">{listSets}</div>
