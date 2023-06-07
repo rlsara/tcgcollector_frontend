@@ -20,6 +20,7 @@ module.exports = {
       "2xl": { min: "1536px" },
     },
     colors: {
+      black: "#000000",
       transparent: "transparent",
       white: "#FFFFFF",
       blue: "#1fb6ff",

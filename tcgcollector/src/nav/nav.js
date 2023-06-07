@@ -1,11 +1,12 @@
 import React from "react";
 import { Button } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { Search } from "tabler-icons-react";
 
 export default function Navbar() {
   return (
     <>
-      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-purple bg-opacity-70">
+      <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-gradient-to-r from-pink to-purple">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <Link
@@ -41,7 +42,9 @@ export default function Navbar() {
                   placeholder="Búsqueda"
                   className="m-2 text-sm placeholder:text-white placeholder:text-opacity-70 text-white dark:text-white text-opacity-80 bg-transparent border-0 border-b-2 border-pink border-opacity-50 appearance-none focus:outline-none focus:ring-0 focus:border-pink focus:border-opacity-35 peer"
                 />
-                <Button className="hover:opacity-75 px-2 border border-purple border-opacity-80">Buscar</Button>
+                <Button className="hover:opacity-80 hover:bg-pink px-3 border border-pink border-opacity-80">
+                  <Search size={15} />
+                </Button>
               </div>
               <a
                 className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
