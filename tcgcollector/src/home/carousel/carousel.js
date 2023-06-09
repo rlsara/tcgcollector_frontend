@@ -25,7 +25,7 @@ export default function Carrusel() {
     },
   ];
   return (
-    <div className="max-w-[1400px] shadow-lg bg-gray-light hover:bg-opacity-80 h-96 w-full m-auto py-10 px-4 relative group">
+    <div className="shadow-lg bg-gray-light brightness-75 hover:brightness-90 hover:bg-opacity-90 h-96 w-full m-auto py-10 px-4 relative group">
       <div
         style={{ backgroundImage: `url(${slides[index].url})`, backgroundSize: "contain", backgroundRepeat: "no-repeat" }}
         className="w-full h-full rounded-2xl bg-center duration-500"

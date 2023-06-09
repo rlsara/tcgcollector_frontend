@@ -6,16 +6,29 @@ import {
 } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 var countPage = 1;
+const pageSize = 15;
 export default function Cards() {
+  const location = useLocation();
   const [data, setData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalCard, setModalCard] = useState(null);
+  const [modalPrices, setModalPrices] = useState(null);
   var listCards = undefined;
-  function pagePlus() {
-    countPage++;
+  const params = useParams();
+  useEffect(() => {
+    countPage = 1;
     getCards();
+  }, [location]);
+  function pagePlus() {
+    const maxPage = Math.ceil(data.totalCount / pageSize);
+    if (countPage < maxPage) {
+      countPage++;
+      getCards();
+      console.log(countPage);
+    }
   }
   function pageMinus() {
     if (countPage > 1) {
@@ -23,15 +36,23 @@ export default function Cards() {
       getCards();
     }
   }
-  const params = useParams();
+  function firstPage() {
+    countPage = 1;
+    getCards();
+  }
+  function lastPage() {
+    countPage = Math.ceil(data.totalCount / pageSize);
+    getCards();
+  }
   const getCards = () => {
     const xhr = new XMLHttpRequest();
     var url =
       `https://api.pokemontcg.io/v2/cards?page=` +
       countPage +
-      `&pageSize=20&orderBy=number`;
+      `&pageSize=` +
+      pageSize;
     var preSet = params.set !== null && params.set !== undefined;
-    var set = `&q=set.id:` + params.set;
+    var set = `&orderBy=number&q=set.id:` + params.set;
     if (preSet) {
       url += set;
     }
@@ -43,9 +64,7 @@ export default function Cards() {
     };
     xhr.send();
   };
-  useEffect(() => {
-    getCards();
-  }, []);
+
   if (data !== undefined && data !== null) {
     var getdata = data.data;
     listCards = getdata.map((card) => (
@@ -55,6 +74,7 @@ export default function Cards() {
         onClick={() => {
           setShowModal(true);
           setModalCard(card);
+          setModalPrices(Object.entries(card.tcgplayer.prices));
         }}
       >
         <CardHeader>
@@ -63,16 +83,10 @@ export default function Cards() {
             src={card.images.small}
           />
         </CardHeader>
-        <CardBody className="mt-2">
+        <CardBody>
           <Typography
             variant="h5"
-            className="mb-2 py-2 text-gray-dark bg-gray-light"
-          >
-            {card.name}
-          </Typography>
-          <Typography
-            variant="h5"
-            className="mb-2 py-2 text-gray-dark bg-gray-light"
+            className="py-2 text-gray-dark bg-gray-light"
           >
             {card.name}
           </Typography>
@@ -81,18 +95,36 @@ export default function Cards() {
     ));
   }
   return (
-    <div className="bg-pink bg-opacity-20">
-      <div className="container mx-auto px-20 bg-white">
+    <div className="bg-pink bg-opacity-20 h-screen">
+      <div className="container mx-auto h-screen px-20 bg-white">
         <h2 className="text-5xl py-2 text-gray-dark font-sans text-center font-semibold leading-tight">
           Cards
         </h2>
         {listCards ? (
           <div className="pt-2">
             <div className="w-full grid grid-cols-2">
-              <div className="text-left">
+              <div className="text-left mb-3">
+                <a
+                  onClick={firstPage}
+                  className="inline-flex items-center px-4 py-2 mr-2 text-sm font-medium text-gray-dark text-opacity-70  bg-white border border-gray border-opacity-30 rounded-lg hover:bg-gray-100 hover:text-white hover:text-opacity-80 hover:bg-gray-dark hover:bg-opacity-70"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </a>
                 <a
                   onClick={pageMinus}
-                  className="inline-flex items-center px-4 py-2 mb-3 text-sm font-medium text-gray-dark text-opacity-70  bg-white border border-gray border-opacity-30 rounded-lg hover:bg-gray-100 hover:text-white hover:text-opacity-80 hover:bg-gray-dark hover:bg-opacity-70"
+                  className="inline-flex items-center px-4 py-2  text-sm font-medium text-gray-dark text-opacity-70  bg-white border border-gray border-opacity-30 rounded-lg hover:bg-gray-100 hover:text-white hover:text-opacity-80 hover:bg-gray-dark hover:bg-opacity-70"
                 >
                   <svg
                     aria-hidden="true"
@@ -110,7 +142,25 @@ export default function Cards() {
                 </a>
                 <a
                   onClick={pagePlus}
-                  className="inline-flex items-center ml-1 px-4 py-2 mb-3 text-sm font-medium text-gray-dark text-opacity-70  bg-white border border-gray border-opacity-30 rounded-lg hover:bg-gray-100 hover:text-white hover:text-opacity-80 hover:bg-gray-dark hover:bg-opacity-70"
+                  className="inline-flex items-center ml-1 px-4 py-2  text-sm font-medium text-gray-dark text-opacity-70  bg-white border border-gray border-opacity-30 rounded-lg hover:bg-gray-100 hover:text-white hover:text-opacity-80 hover:bg-gray-dark hover:bg-opacity-70"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </a>
+                <a
+                  onClick={lastPage}
+                  className="inline-flex items-center ml-2 px-4 py-2  text-sm font-medium text-gray-dark text-opacity-70  bg-white border border-gray border-opacity-30 rounded-lg hover:bg-gray-100 hover:text-white hover:text-opacity-80 hover:bg-gray-dark hover:bg-opacity-70"
                 >
                   <svg
                     aria-hidden="true"
@@ -162,33 +212,47 @@ export default function Cards() {
                   </button>
                 </div>
                 <div className="relative p-6 flex-auto">
-                  <div className="bg-gray-light/20 shadow-md rounded px-8 pt-6 pb-8 w-full grid grid-cols-2 divide-x">
-                    <div className="px-2 mx-2">
-                      <img className="sha" src={modalCard.images.small} />
+                  <div className="bg-gray-light/20 shadow-md rounded px-8 pt-6 pb-8 w-full">
+                    <div className="grid grid-cols-2 divide-x">
+                      <div className="px-2 mx-2">
+                        <img className="sha" src={modalCard.images.small} />
+                      </div>
+                      <div className="pl-4">
+                        <div className="grid grid-cols-2">
+                          <h3 className="font-semibold text-lg">Nombre:</h3>
+                          <h4 className="text-right">{modalCard.name}</h4>
+                        </div>
+                        <div className="grid grid-cols-2">
+                          <h3 className="font-semibold text-lg">Tipo:</h3>
+                          <h4 className="text-right">{modalCard.supertype}</h4>
+                        </div>
+                        <div className="grid grid-cols-2">
+                          <h3 className="font-semibold text-lg">Set:</h3>
+                          <h4 className="text-right">{modalCard.set.name}</h4>
+                        </div>
+                        <div className="grid grid-cols-2">
+                          <h3 className="font-semibold text-lg">Rareza:</h3>
+                          <h4 className="text-right">{modalCard.rarity}</h4>
+                        </div>
+                      </div>
                     </div>
-                    <div className="pl-4">
-                      <div className="grid grid-cols-2">
-                        <h3 className="font-semibold text-lg">Nombre:</h3>
-                        <h4 className="text-right">{modalCard.name}</h4>
-                      </div>
-                      <div className="grid grid-cols-2">
-                        <h3 className="font-semibold text-lg">Tipo:</h3>
-                        <h4 className="text-right">{modalCard.supertype}</h4>
-                      </div>
-                      <div className="grid grid-cols-2">
-                        <h3 className="font-semibold text-lg">Set:</h3>
-                        <h4 className="text-right">{modalCard.set.name}</h4>
-                      </div>
-                      <div className="grid grid-cols-2">
-                        <h3 className="font-semibold text-lg">Rareza:</h3>
-                        <h4 className="text-right">{modalCard.rarity}</h4>
-                      </div>
-                      <div className="grid grid-cols-2">
-                        <h3 className="font-semibold text-lg">Precio:</h3>
-                        <ul className="text-right text-purple/80">
-                          {modalCard.tcgplayer.prices.url}
-                        </ul>
-                      </div>
+                    <div className="text-right">
+                      {modalPrices.map((shop) => {
+                        return (
+                          <div key={shop[0]} className="grid grid-cols-2">
+                            <div></div>
+                            <h3
+                              style={{ textTransform: "capitalize" }}
+                              className="font-semibold text-lg text-right"
+                            >
+                              {shop[0]}:{" "}
+                              <span className="font-light text-green">
+                                {shop[1].market}$
+                              </span>
+                            </h3>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
