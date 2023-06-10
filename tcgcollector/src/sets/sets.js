@@ -76,8 +76,8 @@ export default function Sets() {
     ));
   }
   return (
-    <div className="bg-pink  h-screen bg-opacity-20">
-      <div className="container h-screen mx-auto px-20 bg-white">
+    <div className="bg-pink min-h-screen h-fit bg-opacity-20">
+      <div className="container min-h-screen h-fit mx-auto px-20 bg-white">
         <h2 className="text-5xl py-2 text-gray-dark font-sans text-center font-semibold leading-tight">
           Sets
         </h2>

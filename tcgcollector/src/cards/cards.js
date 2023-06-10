@@ -95,8 +95,8 @@ export default function Cards() {
     ));
   }
   return (
-    <div className="bg-pink bg-opacity-20 h-screen">
-      <div className="container mx-auto h-screen px-20 bg-white">
+    <div className="bg-pink bg-opacity-20 min-h-screen h-fit">
+      <div className="container mx-auto min-h-screen h-fit px-20 bg-white">
         <h2 className="text-5xl py-2 text-gray-dark font-sans text-center font-semibold leading-tight">
           Cards
         </h2>

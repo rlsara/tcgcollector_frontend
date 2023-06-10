@@ -5,6 +5,7 @@ import Home from "./home/home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Cards from "./cards/cards";
 import React from "react";
+import Footer from "./footer/footer";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/cards" element={<Cards />} />
           <Route path="/cards/:set" element={<Cards />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );
