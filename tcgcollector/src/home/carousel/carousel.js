@@ -44,7 +44,7 @@ export default function Carrusel() {
   return (
     <>
       {slides.length > 0 ? (
-        <div className="shadow-lg bg-gray-light brightness-75 hover:brightness-90 hover:bg-opacity-90 h-96 w-full m-auto py-10 px-4 relative group">
+        <div className="shadow-lg bg-purple bg-opacity-50 brightness-75 hover:brightness-90 hover:bg-opacity-70 h-96 w-full m-auto py-10 px-4 relative group">
           <Link to={"/cards/" + slides[index].id}>
             <div
               style={{
